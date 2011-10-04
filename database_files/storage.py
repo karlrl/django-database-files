@@ -12,8 +12,8 @@ class DatabaseStorage(Storage):
         Replaces the filename with the specified pk and removes any dir
         """
         dir_name, file_name = os.path.split(name)
-        file_root, file_ext = os.path.splitext(file_name)
-        return '%s%s' % (pk, file_ext)
+        # file_root, file_ext = os.path.splitext(file_name)
+        return '%s/%s' % (pk, file_name)
     
     def _open(self, name, mode='rb'):
         try:
@@ -30,6 +30,7 @@ class DatabaseStorage(Storage):
         f = models.File.objects.create(
             content=base64.b64encode(content.read()),
             size=content.size,
+            name=name
         )
         return self._generate_name(name, f.pk)
     
